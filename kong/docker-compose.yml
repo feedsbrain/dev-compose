@@ -33,7 +33,7 @@ services:
     command: kong migrations bootstrap
     networks:
       - kong-net
-    restart: always
+    restart: on-failure
     environment:
       KONG_DATABASE: postgres
       KONG_PG_HOST: kong-database
@@ -81,7 +81,7 @@ services:
     command: "-c prepare -a postgres -u postgresql://kong:${KONG_PG_PASSWORD:-kong}@kong-database:5432/konga"
     networks:
       - kong-net
-    restart: always
+    restart: on-failure
     depends_on:
       - kong-database
 
