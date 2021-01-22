@@ -6,7 +6,7 @@ Before we run any of the docker compose script in this repository, we need to cr
 After setting up the `.env` file, to run the docker compose script, navigate insite the folder of docker compose file that we want to execute, and then we need to specify the environment variables file location in the `docker-compose up` command as this example:
 
 ```
-$ docker-compose --env-file ../.env.dev up 
+$ docker-compose --env-file ../.env up 
 ```
 
 For the development purposes, I usually dedicate a path to store all of my running docker container persistent volumes. And for that purpose, we need to set the environment variable:
