@@ -2,14 +2,16 @@ version: "3.1"
 
 services:
   mongo:
-    image: mongo
+    image: mongo:latest
+    container_name: mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
 
   mongo-express:
-    image: mongo-express
+    image: mongo-express:latest
+    container_name: mongo-express
     restart: always
     ports:
       - 8081:8081
