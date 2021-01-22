@@ -1,7 +1,9 @@
 # dev-compose
 This repo contains collections of docker compose files that I use daily on my development machine.
 
-When running the docker compose, we need to specify the environment variables file on the `docker-compose up` command i.e:
+Before we run any of the docker compose script in this repository, we need to create `.env` file on the root of this project. Please refer to `.env.template` file and fill in the required environment variables based on the stack or compose file we need.
+
+After setting up the `.env` file, to run the docker compose script, navigate insite the folder of docker compose file that we want to execute, and then we need to specify the environment variables file location in the `docker-compose up` command as this example:
 
 ```
 $ docker-compose --env-file ./config/.env.dev up 
@@ -13,7 +15,7 @@ For the development purposes, I usually dedicate a path to store all of my runni
 BASE_VOLUME_DIR=/home/docker/volumes
 ```
 
-Feel free to change the path to your preference and I usually just make the path to be available for read and write for all users:
+Feel free to change the path to our preference and I usually just make the path to be available for read and write for all users:
 
 ```
 $ sudo chmod 777 /home/docker/volumes
