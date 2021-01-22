@@ -30,6 +30,7 @@ services:
   #######################################
   kong-migration:
     image: ${KONG_DOCKER_TAG:-kong:latest}
+    container_name: kong-migration
     command: kong migrations bootstrap
     networks:
       - kong-net
@@ -48,6 +49,7 @@ services:
   #######################################
   kong:
     image: ${KONG_DOCKER_TAG:-kong:latest}
+    container_name: kong
     restart: always
     networks:
       - kong-net
@@ -78,6 +80,7 @@ services:
   #######################################
   konga-prepare:
     image: pantsel/konga:latest
+    container_name: konga-prepare
     command: "-c prepare -a postgres -u postgresql://kong:${KONG_PG_PASSWORD:-kong}@kong-database:5432/konga"
     networks:
       - kong-net
@@ -90,6 +93,7 @@ services:
   #######################################
   konga:
     image: pantsel/konga:latest
+    container_name: konga
     restart: always
     networks:
       - kong-net
