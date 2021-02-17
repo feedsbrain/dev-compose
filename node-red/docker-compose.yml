@@ -6,7 +6,7 @@ services:
     container_name: node-red
     restart: always
     volumes:
-      - ${BASE_VOLUME_DIR}/nodered:/data
+      - ${BASE_VOLUME_DIR}/node-red:/data
     ports:
       - "1880:1880"
     environment:
