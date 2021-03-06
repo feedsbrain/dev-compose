@@ -15,11 +15,12 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ${BASE_VOLUME_DIR}/elasticsearch/data01:/usr/share/elasticsearch/data
+      - ${BASE_VOLUME_DIR}/elastic/data01:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
     networks:
       - elastic
+
   es02:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
     container_name: es02
@@ -35,9 +36,10 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ${BASE_VOLUME_DIR}/elasticsearch/data02:/usr/share/elasticsearch/data
+      - ${BASE_VOLUME_DIR}/elastic/data02:/usr/share/elasticsearch/data
     networks:
       - elastic
+
   es03:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
     container_name: es03
@@ -53,7 +55,18 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ${BASE_VOLUME_DIR}/elasticsearch/data03:/usr/share/elasticsearch/data
+      - ${BASE_VOLUME_DIR}/elastic/data03:/usr/share/elasticsearch/data
+    networks:
+      - elastic
+
+  kib01:
+    image: docker.elastic.co/kibana/kibana:7.11.1
+    container_name: kib01
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://es01:9200
+      ELASTICSEARCH_HOSTS: '["http://es01:9200","http://es02:9200","http://es03:9200"]'
     networks:
       - elastic
 
