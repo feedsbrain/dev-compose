@@ -19,7 +19,7 @@ services:
     ports:
       - 9200:9200
     networks:
-      - elastic
+      - elastic-net
 
   es02:
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
@@ -38,7 +38,7 @@ services:
     volumes:
       - ${BASE_VOLUME_DIR}/elastic/data02:/usr/share/elasticsearch/data
     networks:
-      - elastic
+      - elastic-net
 
   es03:
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
@@ -57,7 +57,7 @@ services:
     volumes:
       - ${BASE_VOLUME_DIR}/elastic/data03:/usr/share/elasticsearch/data
     networks:
-      - elastic
+      - elastic-net
 
   kib01:
     image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
@@ -68,8 +68,8 @@ services:
       ELASTICSEARCH_URL: http://es01:9200
       ELASTICSEARCH_HOSTS: '["http://es01:9200","http://es02:9200","http://es03:9200"]'
     networks:
-      - elastic
+      - elastic-net
 
 networks:
-  elastic:
+  elastic-net:
     driver: bridge
