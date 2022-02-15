@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  sonarqube:
+    image: sonarqube:8.9.6-community
+    restart: unless-stopped
+    environment:
+      - SONARQUBE_JDBC_USERNAME=${SONARQUBE_DB_USER}
+      - SONARQUBE_JDBC_PASSWORD=${SONARQUBE_DB_PASSWORD}
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/${SONARQUBE_DB_NAME}
+    ports:
+      - "9092:9000"
+      - "9093:9092"
+    volumes:
+      - ${BASE_VOLUME_DIR}/sonarqube/conf:/opt/sonarqube/conf
+      - ${BASE_VOLUME_DIR}/sonarqube/data:/opt/sonarqube/data
+      - ${BASE_VOLUME_DIR}/sonarqube/extensions:/opt/sonarqube/extensions
+      - ${BASE_VOLUME_DIR}/sonarqube/bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+      
+  db:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${SONARQUBE_DB_USER}
+      - POSTGRES_PASSWORD=${SONARQUBE_DB_PASSWORD}
+      - POSTGRES_DB=${SONARQUBE_DB_NAME}
+    volumes:
+      - ${BASE_VOLUME_DIR}/sonarqube/postgres:/var/lib/postgresql
+      - ${BASE_VOLUME_DIR}/sonarqube/postgres/data:/var/lib/postgresql/data
