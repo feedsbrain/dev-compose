@@ -1,0 +1,61 @@
+version: "3.1"
+
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg14
+    container_name: timescaledb
+    restart: always
+    volumes:
+      - ${BASE_VOLUME_DIR}/timescaledb:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5433:5432
+    environment:      
+      POSTGRES_PASSWORD: ${PROMETHEUS_POSTGRES_PASSWORD}      
+
+  promscale:
+    image: timescale/promscale:latest
+    container_name: promscale
+    ports:
+      - 9201:9201/tcp
+    restart: always
+    depends_on:
+      - timescaledb
+    environment:      
+      PROMSCALE_DB_CONNECT_RETRIES: 10
+      PROMSCALE_DB_HOST: timescaledb
+      PROMSCALE_DB_PASSWORD: ${PROMETHEUS_POSTGRES_PASSWORD}
+      PROMSCALE_WEB_TELEMETRY_PATH: /metrics
+      PROMSCALE_DB_SSL_MODE: allow
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: always
+    depends_on:
+      - timescaledb
+      - promscale
+    volumes:
+      - ${PROMETHEUS_CONFIG_DIR}/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - 9090:9090
+
+  pushgateway:
+    image: prom/pushgateway:latest
+    container_name: pushgateway
+    restart: always
+    depends_on:
+      - prometheus    
+    ports:
+      - 9290:9091
+      
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    restart: always
+    depends_on:
+      - prometheus
+    volumes:
+      - ${BASE_VOLUME_DIR}/grafana:/var/lib/grafana
+    ports:
+      - 5602:3000
