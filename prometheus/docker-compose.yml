@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   timescaledb:
-    image: timescale/timescaledb:latest-pg14
+    image: timescale/timescaledb-ha:pg14-latest
     container_name: timescaledb
     restart: always
     volumes:
@@ -39,7 +39,6 @@ services:
       - ${PROMETHEUS_CONFIG_DIR}/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     ports:
       - 9090:9090
-      - 9323:9323
 
   pushgateway:
     image: prom/pushgateway:latest
