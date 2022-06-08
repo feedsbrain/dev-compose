@@ -2,7 +2,9 @@ version:  "3.1"
 
 services:
   mongodb-sharded:
-    image: bitnami/mongodb-sharded:4.4  
+    image: bitnami/mongodb-sharded:4.4
+    container_name: mongodb-sharded
+    restart: always
     environment:
       - MONGODB_ADVERTISED_HOSTNAME=mongodb-sharded
       - MONGODB_SHARDING_MODE=mongos
@@ -14,7 +16,9 @@ services:
       - "27017:27017"
 
   mongodb-shard0:
-    image: bitnami/mongodb-sharded:4.4    
+    image: bitnami/mongodb-sharded:4.4
+    container_name: mongodb-shard0
+    restart: always
     environment:
       - MONGODB_ADVERTISED_HOSTNAME=mongodb-shard0
       - MONGODB_SHARDING_MODE=shardsvr
@@ -26,8 +30,40 @@ services:
     volumes:
       - ${BASE_VOLUME_DIR}/mongodb-bitnami/mongodb-shard0:/bitnami
 
+  mongodb-shard1:
+    image: bitnami/mongodb-sharded:4.4
+    container_name: mongodb-shard1
+    restart: always
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-shard1
+      - MONGODB_SHARDING_MODE=shardsvr
+      - MONGODB_MONGOS_HOST=mongodb-sharded
+      - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_KEY=replicasetkey
+      - MONGODB_REPLICA_SET_NAME=shard1
+    volumes:
+      - ${BASE_VOLUME_DIR}/mongodb-bitnami/mongodb-shard1:/bitnami
+
+  mongodb-shard2:
+    image: bitnami/mongodb-sharded:4.4
+    container_name: mongodb-shard2
+    restart: always
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-shard2
+      - MONGODB_SHARDING_MODE=shardsvr
+      - MONGODB_MONGOS_HOST=mongodb-sharded
+      - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_KEY=replicasetkey
+      - MONGODB_REPLICA_SET_NAME=shard2
+    volumes:
+      - ${BASE_VOLUME_DIR}/mongodb-bitnami/mongodb-shard2:/bitnami
+
   mongodb-cfg:
-    image: bitnami/mongodb-sharded:4.4    
+    image: bitnami/mongodb-sharded:4.4
+    container_name: mongodb-cfg
+    restart: always 
     environment:
       - MONGODB_ADVERTISED_HOSTNAME=mongodb-cfg
       - MONGODB_SHARDING_MODE=configsvr
