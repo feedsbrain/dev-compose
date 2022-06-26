@@ -2,11 +2,12 @@ version: "3.7"
 
 services:
   gitlab-runner:
-    image: gitlab/gitlab-runner:latest
+    image: feedsbrain/buildmystack:0.1.6
     container_name: gitlab-runner
     restart: always
+    command: bash -l -c "sudo gitlab-runner start && tail -f /dev/null"
     volumes:
-      - ${BASE_VOLUME_DIR}/gitlab-runner/config:/data
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ${BASE_VOLUME_DIR}/gitlab-runner/config:/etc/gitlab-runner
+      - ${BASE_VOLUME_DIR}/gitlab-runner/runner:/home/gitlab-runner
     environment:
       - TZ=Asia/Kuala_Lumpur
