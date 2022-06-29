@@ -16,8 +16,10 @@ services:
     image: gitlab/gitlab-runner:latest
     container_name: gitlab-docker
     restart: always
+    privileged: true
     volumes:
-      - ${BASE_VOLUME_DIR}/gitlab-docker/config:/data
+      - ${BASE_VOLUME_DIR}/gitlab-docker/config:/etc/gitlab-runner
+      - ${BASE_VOLUME_DIR}/gitlab-docker/runner:/data
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - TZ=Asia/Kuala_Lumpur
