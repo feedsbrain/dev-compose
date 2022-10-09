@@ -24,8 +24,8 @@ services:
       - SONARQUBE_JDBC_PASSWORD=${SONARQUBE_DB_PASSWORD}
       - SONARQUBE_JDBC_URL=jdbc:postgresql://sonarqube-db:5432/${SONARQUBE_DB_NAME}
     ports:
-      - "9100:9000"
-      - "9192:9092"
+      - "9000:9000"
+      - "9092:9092"
     volumes:
       - ${BASE_VOLUME_DIR}/sonarqube/conf:/opt/sonarqube/conf
       - ${BASE_VOLUME_DIR}/sonarqube/data:/opt/sonarqube/data
