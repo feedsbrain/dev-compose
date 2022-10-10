@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  github-runner:
+    image: feedsbrain/buildmystack:0.2.0
+    container_name: github-runner
+    restart: always
+    command: bash -l -c "sudo gitlab-runner start && tail -f /dev/null"
+    volumes:
+      - ${BASE_VOLUME_DIR}/github-runner/runner:/home/github-runner
+    environment:
+      - TZ=Asia/Kuala_Lumpur
