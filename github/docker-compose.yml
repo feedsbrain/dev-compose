@@ -5,8 +5,8 @@ services:
     image: feedsbrain/buildmystack:0.2.0
     container_name: github-runner
     restart: always
-    command: bash -l -c "sudo gitlab-runner start && tail -f /dev/null"
+    command: bash -lc "/home/runner/github/environments/runner.sh && tail -f /dev/null"
     volumes:
-      - ${BASE_VOLUME_DIR}/github-runner/runner:/home/github-runner
+      - ${BASE_VOLUME_DIR}/github-runner/runner:/home/runner/github/environments
     environment:
       - TZ=Asia/Kuala_Lumpur
