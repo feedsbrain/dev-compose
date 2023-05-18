@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    volumes:
+      - ${BASE_VOLUME_DIR}/odoo-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: ${ODOO_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${ODOO_POSTGRES_PASSWORD}
+
+  odoo:
+    image: odoo:16
+    restart: always
+    volumes:
+      - ${BASE_VOLUME_DIR}/odoo-data:/var/lib/odoo
+    ports:
+      - 8069:8069
+    environment:
+      HOST: db
+      USER: ${ODOO_USER}
+      PASSWORD: ${ODOO_PASSWORD}
