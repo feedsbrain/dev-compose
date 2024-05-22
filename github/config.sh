@@ -19,8 +19,8 @@ else
   fi
 
   if [[ -z "$1" ]]; then
-    docker run -ti -v $BASE_VOLUME_DIR/github-runner/runner:$GITHUB_RUNNER_ENVIRONMENTS feedsbrain/buildmystack:0.2.0 /bin/bash -l
+    docker run -ti -v $BASE_VOLUME_DIR/github-runner/runner:$GITHUB_RUNNER_ENVIRONMENTS feedsbrain/buildmystack:0.2.6 /bin/bash -l
   else
-    docker run -ti -v $BASE_VOLUME_DIR/github-runner/runner:$GITHUB_RUNNER_ENVIRONMENTS feedsbrain/buildmystack:0.2.0 /bin/bash -lc "cp -r /home/runner/github/actions-runner $GITHUB_RUNNER_ENVIRONMENTS/$1"
+    docker run -ti -v $BASE_VOLUME_DIR/github-runner/runner:$GITHUB_RUNNER_ENVIRONMENTS feedsbrain/buildmystack:0.2.6 /bin/bash -lc "cp -r /home/runner/github/actions-runner $GITHUB_RUNNER_ENVIRONMENTS/$1"
   fi
 fi
