@@ -12,6 +12,6 @@ services:
       TZ: "Asia/Kuala_Lumpur"
       WEBPASSWORD: ${PIHOLE_WEB_PASSWORD}
     volumes:
-      - " ${BASE_VOLUME_DIR}/pihole/etc/pihole:/etc/pihole"
-      - " ${BASE_VOLUME_DIR}/pihole/etc/dnsmasq.d:/etc/dnsmasq.d"
+      - "${BASE_VOLUME_DIR}/pihole/etc/pihole:/etc/pihole"
+      - "${BASE_VOLUME_DIR}/pihole/etc/dnsmasq.d:/etc/dnsmasq.d"
     restart: always
