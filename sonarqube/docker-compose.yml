@@ -30,4 +30,4 @@ services:
       - ${BASE_VOLUME_DIR}/sonarqube/conf:/opt/sonarqube/conf
       - ${BASE_VOLUME_DIR}/sonarqube/data:/opt/sonarqube/data
       - ${BASE_VOLUME_DIR}/sonarqube/extensions:/opt/sonarqube/extensions
-      - ${BASE_VOLUME_DIR}/sonarqube/bundled-plugins:/opt/sonarqube/lib/bundled-plugins      
+      - ${BASE_VOLUME_DIR}/sonarqube/bundled-plugins:/opt/sonarqube/lib/bundled-plugins
