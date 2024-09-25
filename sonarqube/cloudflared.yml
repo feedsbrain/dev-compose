@@ -1,0 +1,7 @@
+version: "3"
+services:
+  cloudflared:
+    image: cloudflare/cloudflared
+    container_name: sonarqube-cf
+    restart: always
+    command: tunnel run --token ${CLOUDFLARED_TOKEN}
