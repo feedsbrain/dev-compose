@@ -20,3 +20,5 @@ Feel free to change the path to our preference and I usually just make the path 
 ```
 $ sudo chmod 777 /home/docker/volumes
 ```
+
+The docker compose file for `open-webui` and `stable-diffusion-webui` are tailored for AMD GPU, specifically Radeon RX 6800 series. This are the best value for used GPU that equiped with 16 GB of VRAM.

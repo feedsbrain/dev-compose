@@ -1,0 +1,55 @@
+services:
+  stable-diffusion-webui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: stable-diffusion-webui
+    tty: true
+    restart: always
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    security_opt:
+      - seccomp:unconfined
+    group_add:
+      - video
+    ports:
+      - ${OPEN_WEBUI_PORT-7860}:7860
+    environment:
+      - 'HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION-10.3.0}'
+      - 'COMMANDLINE_ARGS=--update-check --update-all-extensions --listen --api --enable-insecure-extension-access --skip-torch-cuda-test --upcast-sampling --no-half --no-half-vae --opt-sub-quad-attention --api-auth ${API_AUTH_USERNAME-api}:${API_AUTH_KEY-key} --gradio-auth ${GRADIO_AUTH_USERNAME-admin}:${GRADIO_AUTH_PASSWORD-admin}'
+      - 'TORCH_COMMAND=pip install -U torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.2/'
+    volumes:
+      - "${BASE_VOLUME_DIR}/stable-diffusion-webui:/workdir"
+  ollama:
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: always
+    group_add:
+      - video
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    security_opt:
+      - seccomp:unconfined
+    image: ollama/ollama:${OLLAMA_DOCKER_TAG-rocm}
+    environment:
+      - 'HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION-10.3.0}'
+    volumes:
+      - "${BASE_VOLUME_DIR}/ollama:/root/.ollama"
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
+    container_name: open-webui
+    depends_on:
+      - ollama
+    ports:
+      - ${OPEN_WEBUI_PORT-8080}:8080
+    environment:
+      - 'OLLAMA_BASE_URL=http://ollama:11434'
+      - 'WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY}'
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: always
+    volumes:
+      - "${BASE_VOLUME_DIR}/open-webui:/app/backend/data"
