@@ -16,12 +16,15 @@ services:
     ports:
       - ${OPEN_WEBUI_PORT-7860}:7860
     environment:
+      - 'PIP_CACHE_DIR=/workdir/.cache'
       - 'HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION-10.3.0}'
-      - 'COMMANDLINE_ARGS=--update-check --update-all-extensions --listen --api --enable-insecure-extension-access --skip-torch-cuda-test --upcast-sampling --no-half --no-half-vae --opt-sub-quad-attention --api-auth ${API_AUTH_USERNAME-api}:${API_AUTH_KEY-key} --gradio-auth ${GRADIO_AUTH_USERNAME-admin}:${GRADIO_AUTH_PASSWORD-admin}'
+      - 'COMMANDLINE_ARGS=--update-check --update-all-extensions --reinstall-torch --listen --api --enable-insecure-extension-access --skip-torch-cuda-test --upcast-sampling --no-half --no-half-vae --opt-sub-quad-attention --api-auth ${API_AUTH_USERNAME-api}:${API_AUTH_KEY-key} --gradio-auth ${GRADIO_AUTH_USERNAME-admin}:${GRADIO_AUTH_PASSWORD-admin}'
       - 'TORCH_COMMAND=pip install -U torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.2/'
     volumes:
+      - "${BASE_VOLUME_DIR}/stable-diffusion-webui/.cache:/workdir/.cache"
       - "${BASE_VOLUME_DIR}/stable-diffusion-webui:/workdir"
   ollama:
+    image: ollama/ollama:${OLLAMA_DOCKER_TAG-rocm}
     container_name: ollama
     pull_policy: always
     tty: true
@@ -33,7 +36,6 @@ services:
       - /dev/dri
     security_opt:
       - seccomp:unconfined
-    image: ollama/ollama:${OLLAMA_DOCKER_TAG-rocm}
     environment:
       - 'HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION-10.3.0}'
     volumes:
@@ -41,6 +43,7 @@ services:
   open-webui:
     image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
     container_name: open-webui
+    pull_policy: always
     depends_on:
       - ollama
     ports:
