@@ -20,4 +20,4 @@ python3 -m pip install --upgrade pip wheel
 . venv/bin/activate
 python3 -m pip config set global.cache-dir $PIP_CACHE_DIR
 python3 -m pip install basicsr
-./webui.sh -f $COMMANDLINE_ARGS
+./webui.sh -f
