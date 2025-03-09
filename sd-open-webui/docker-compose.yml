@@ -21,7 +21,7 @@ services:
       - 'HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION-10.3.0}'
       - 'PYTORCH_HIP_FALLBACK=1'
       - 'PYTORCH_HIP_ALLOC_CONF=expandable_segments:True'
-      - 'COMMANDLINE_ARGS=--update-check --update-all-extensions --reinstall-torch --listen --api --enable-insecure-extension-access --medvram --use-cpu interrogate --skip-torch-cuda-test --upcast-sampling --no-half --no-half-vae --opt-sub-quad-attention --opt-split-attention-v1 --api-auth ${API_AUTH_USERNAME-api}:${API_AUTH_KEY-key} --gradio-auth ${GRADIO_AUTH_USERNAME-admin}:${GRADIO_AUTH_PASSWORD-admin}'
+      - 'COMMANDLINE_ARGS=--update-check --update-all-extensions --reinstall-torch --listen --api --enable-insecure-extension-access --medvram --use-cpu interrogate --skip-torch-cuda-test --upcast-sampling --no-half --no-half-vae --opt-sub-quad-attention --opt-split-attention-v1 --api-auth ${SD_WEBUI_API_AUTH_USERNAME-api}:${SD_WEBUI_API_AUTH_KEY-key} --gradio-auth ${SD_WEBUI_GRADIO_AUTH_USERNAME-admin}:${SD_WEBUI_GRADIO_AUTH_PASSWORD-admin}'
       - 'TORCH_COMMAND=pip install -U torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.2/'
       - 'PIP_CACHE_DIR=/workdir/.cache'
     volumes:
@@ -57,8 +57,19 @@ services:
     ports:
       - ${OPEN_WEBUI_PORT-8080}:8080
     environment:
-      - 'OLLAMA_BASE_URL=http://ollama:11434'
-      - 'WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY}'
+      - 'ENABLE_OLLAMA_API=${OPEN_WEBUI_ENABLE_OLLAMA_API-True}'
+      - 'OLLAMA_BASE_URL=${OPEN_WEBUI_OLLAMA_BASE_URL-http://ollama:11434}'
+      - 'WEBUI_SECRET_KEY=${OPEN_WEBUI_SECRET_KEY}'
+      - 'AUTOMATIC1111_BASE_URL=${OPEN_WEBUI_AUTOMATIC1111_BASE_URL-http://stable-diffusion-webui:7860}'
+      - 'AUTOMATIC1111_API_AUTH=${SD_WEBUI_API_AUTH_USERNAME}:${SD_WEBUI_API_AUTH_KEY}'
+      - 'ENABLE_IMAGE_GENERATION=${OPEN_WEBUI_ENABLE_IMAGE_GENERATION-True}'
+      - 'IMAGE_GENERATION_ENGINE=${OPEN_WEBUI_IMAGE_GENERATION_ENGINE-automatic1111}'
+      - 'IMAGE_GENERATION_MODEL=${OPEN_WEBUI_IMAGE_GENERATION_MODEL-v1-5-pruned-emaonly.safetensors [6ce0161689]}'
+      - 'IMAGE_SIZE=${OPEN_WEBUI_IMAGE_SIZE-512x512}'
+      - 'IMAGE_STEPS=${OPEN_WEBUI_IMAGE_STEPS-20}'
+      - 'AUTOMATIC1111_CFG_SCALE=${OPEN_WEBUI_AUTOMATIC1111_CFG_SCALE-7}'
+      - 'AUTOMATIC1111_SAMPLER=${OPEN_WEBUI_AUTOMATIC1111_SAMPLER-DPM++ 2M}'
+      - 'AUTOMATIC1111_SCHEDULER=${OPEN_WEBUI_AUTOMATIC1111_SCHEDULER-Karras}'
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: always

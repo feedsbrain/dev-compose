@@ -14,10 +14,12 @@ chown root:root -R /workdir
 # create virtual environment
 cd /workdir
 python3 -m venv venv
-python3 -m pip install --upgrade pip wheel
 
 # install extra dependencies and start webui
 . venv/bin/activate
 python3 -m pip config set global.cache-dir $PIP_CACHE_DIR
+python3 -m pip install --upgrade pip wheel
 python3 -m pip install basicsr
+
+# allow to run webui in root mode (for container)
 ./webui.sh -f
