@@ -1,8 +1,6 @@
-version:  "3.1"
-
 services:
   mongodb-sharded:
-    image: bitnami/mongodb-sharded:4.4
+    image: bitnami/mongodb-sharded:8.0.5
     container_name: mongodb-sharded
     restart: always
     environment:
@@ -14,9 +12,13 @@ services:
       - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
     ports:
       - "27017:27017"
+    depends_on:
+      - mongodb-shard0
+      - mongodb-shard1
+      - mongodb-shard2
 
   mongodb-shard0:
-    image: bitnami/mongodb-sharded:4.4
+    image: bitnami/mongodb-sharded:8.0.5
     container_name: mongodb-shard0
     restart: always
     environment:
@@ -29,9 +31,11 @@ services:
       - MONGODB_REPLICA_SET_NAME=shard0
     volumes:
       - ${BASE_VOLUME_DIR}/mongodb-bitnami/mongodb-shard0:/bitnami
+    depends_on:
+      - mongodb-cfg
 
   mongodb-shard1:
-    image: bitnami/mongodb-sharded:4.4
+    image: bitnami/mongodb-sharded:8.0.5
     container_name: mongodb-shard1
     restart: always
     environment:
@@ -44,9 +48,11 @@ services:
       - MONGODB_REPLICA_SET_NAME=shard1
     volumes:
       - ${BASE_VOLUME_DIR}/mongodb-bitnami/mongodb-shard1:/bitnami
+    depends_on:
+      - mongodb-cfg
 
   mongodb-shard2:
-    image: bitnami/mongodb-sharded:4.4
+    image: bitnami/mongodb-sharded:8.0.5
     container_name: mongodb-shard2
     restart: always
     environment:
@@ -59,9 +65,11 @@ services:
       - MONGODB_REPLICA_SET_NAME=shard2
     volumes:
       - ${BASE_VOLUME_DIR}/mongodb-bitnami/mongodb-shard2:/bitnami
+    depends_on:
+      - mongodb-cfg
 
   mongodb-cfg:
-    image: bitnami/mongodb-sharded:4.4
+    image: bitnami/mongodb-sharded:8.0.5
     container_name: mongodb-cfg
     restart: always 
     environment:
