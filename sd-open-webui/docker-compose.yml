@@ -24,6 +24,7 @@ services:
       - 'COMMANDLINE_ARGS=--update-check --update-all-extensions --reinstall-torch --listen --api --enable-insecure-extension-access --medvram --use-cpu interrogate --skip-torch-cuda-test --upcast-sampling --no-half --no-half-vae --opt-sub-quad-attention --opt-split-attention-v1 --api-auth ${SD_WEBUI_API_AUTH_USERNAME-api}:${SD_WEBUI_API_AUTH_KEY-key} --gradio-auth ${SD_WEBUI_GRADIO_AUTH_USERNAME-admin}:${SD_WEBUI_GRADIO_AUTH_PASSWORD-admin}'
       - 'TORCH_COMMAND=pip install -U torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.2/'
       - 'PIP_CACHE_DIR=/workdir/.cache'
+      - 'IIB_ACCESS_CONTROL=${IIB_ACCESS_CONTROL-auto}'
       - 'IIB_SECRET_KEY=${IIB_SECRET_KEY}'
     volumes:
       - "${BASE_VOLUME_DIR}/stable-diffusion-webui/.cache:/workdir/.cache"
