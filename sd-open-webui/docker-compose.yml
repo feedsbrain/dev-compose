@@ -99,6 +99,7 @@ services:
       - 'ENABLE_WEBSOCKET_SUPPORT="true"'
       - 'WEBSOCKET_MANAGER="redis"'
       - 'WEBSOCKET_REDIS_URL="redis://redis:6379/1"'
+      - 'IIB_SECRET_KEY=${IIB_SECRET_KEY}'
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: always
