@@ -25,7 +25,7 @@ services:
       - 'TORCH_COMMAND=pip install -U torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.2/'
       - 'PIP_CACHE_DIR=/workdir/.cache'
       - 'IIB_ACCESS_CONTROL=${IIB_ACCESS_CONTROL-auto}'
-      - 'IIB_SECRET_KEY=${IIB_SECRET_KEY}'
+      - 'IIB_SECRET_KEY=${IIB_SECRET_KEY-secret}'
     volumes:
       - "${BASE_VOLUME_DIR}/stable-diffusion-webui/.cache:/workdir/.cache"
       - "${BASE_VOLUME_DIR}/stable-diffusion-webui:/workdir"
