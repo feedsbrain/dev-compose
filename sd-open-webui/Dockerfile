@@ -37,9 +37,8 @@ WORKDIR /workdir
 VOLUME /workdir
 
 # Checkout to temp directory as base
-RUN mkdir temp \
-  && cd temp \
-  && git clone --depth 1 --branch v1.10.1 https://github.com/AUTOMATIC1111/stable-diffusion-webui
+RUN mkdir -p /workdir/temp
+RUN git clone --depth 1 --branch v1.10.1 https://github.com/AUTOMATIC1111/stable-diffusion-webui /workdir/temp/stable-diffusion-webui
 
 # $1 refers to the branch name
 ENTRYPOINT [ "/entrypoint.sh", "v1.10.1"]
