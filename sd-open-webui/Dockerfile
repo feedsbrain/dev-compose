@@ -1,9 +1,6 @@
 FROM ubuntu:22.04
 
-VOLUME /workdir
-
 ARG ROCM_VERSION=6.4.1
-
 ENV COMMANDLINE_ARGS="--upcast-sampling --listen"
 
 # Build the base linux system
@@ -29,12 +26,10 @@ RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y ca-certificates 
   && rm -rf /var/lib/apt/lists/*
 
 COPY ./entrypoint.sh /entrypoint.sh
-
 RUN chmod +x /entrypoint.sh
 
 # Create the working directory
 WORKDIR /workdir
-VOLUME /workdir
 
 # $1 refers to the branch name
 ENTRYPOINT [ "/entrypoint.sh", "v1.10.1"]
