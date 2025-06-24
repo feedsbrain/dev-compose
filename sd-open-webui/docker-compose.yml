@@ -13,7 +13,6 @@ services:
       - seccomp:unconfined
     group_add:
       - video
-    shm_size: '8gb'
     ports:
       - ${OPEN_WEBUI_PORT-7860}:7860
     environment:
@@ -21,8 +20,8 @@ services:
       - 'HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION-10.3.0}'
       - 'PYTORCH_HIP_FALLBACK=1'
       - 'PYTORCH_HIP_ALLOC_CONF=expandable_segments:True'
-      - 'COMMANDLINE_ARGS=--update-check --update-all-extensions --reinstall-torch --listen --api --enable-insecure-extension-access --medvram --use-cpu interrogate --skip-torch-cuda-test --upcast-sampling --no-half --no-half-vae --opt-sub-quad-attention --opt-split-attention-v1 --api-auth ${SD_WEBUI_API_AUTH_USERNAME-api}:${SD_WEBUI_API_AUTH_KEY-key} --gradio-auth ${SD_WEBUI_GRADIO_AUTH_USERNAME-admin}:${SD_WEBUI_GRADIO_AUTH_PASSWORD-admin}'
-      - 'TORCH_COMMAND=pip install -U torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.2/'
+      - 'COMMANDLINE_ARGS=--update-check --update-all-extensions --reinstall-torch --listen --api --enable-insecure-extension-access --skip-torch-cuda-test --upcast-sampling --no-half --medvram --opt-sub-quad-attention --opt-split-attention --api-auth ${SD_WEBUI_API_AUTH_USERNAME-api}:${SD_WEBUI_API_AUTH_KEY-key} --gradio-auth ${SD_WEBUI_GRADIO_AUTH_USERNAME-admin}:${SD_WEBUI_GRADIO_AUTH_PASSWORD-admin}'
+      - 'TORCH_COMMAND=pip install -U torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.4/'
       - 'PIP_CACHE_DIR=/workdir/.cache'
       - 'IIB_ACCESS_CONTROL=${IIB_ACCESS_CONTROL-auto}'
       - 'IIB_SECRET_KEY=${IIB_SECRET_KEY-secret}'
@@ -42,7 +41,6 @@ services:
       - seccomp:unconfined
     group_add:
       - video
-    shm_size: '8gb'
     environment:
       - 'HIP_PLATFORM=amd'
       - 'HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION-10.3.0}'

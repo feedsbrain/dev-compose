@@ -2,9 +2,8 @@
 set -x
 
 # reclone the repo
-git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui /workdir/temp/stable-diffusion-webui
+git clone --depth 1 --branch $1 https://github.com/AUTOMATIC1111/stable-diffusion-webui /workdir/temp/stable-diffusion-webui
 cd /workdir/temp/stable-diffusion-webui
-git checkout $1
 
 # copy update the original workdir
 cp -R -u -p /workdir/temp/stable-diffusion-webui/* /workdir
