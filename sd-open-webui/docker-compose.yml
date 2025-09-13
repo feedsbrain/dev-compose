@@ -1,51 +1,12 @@
 services:
-  stable-diffusion-webui:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: stable-diffusion-webui
-    tty: true
-    restart: always
-    devices:
-      - /dev/kfd
-      - /dev/dri
-    security_opt:
-      - seccomp:unconfined
-    group_add:
-      - video
-    ports:
-      - ${OPEN_WEBUI_PORT-7860}:7860
-    environment:
-      - 'HIP_PLATFORM=amd'
-      - 'HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION-10.3.0}'
-      - 'PYTORCH_HIP_FALLBACK=1'
-      - 'PYTORCH_HIP_ALLOC_CONF=garbage_collection_threshold:0.6,max_split_size_mb:128,expandable_segments:True'
-      - 'COMMANDLINE_ARGS=--update-check --update-all-extensions --reinstall-torch --listen --api --enable-insecure-extension-access --skip-torch-cuda-test --upcast-sampling --precision full --no-half --medvram --opt-sub-quad-attention --opt-split-attention-v1 --api-auth ${SD_WEBUI_API_AUTH_USERNAME-api}:${SD_WEBUI_API_AUTH_KEY-key} --gradio-auth ${SD_WEBUI_GRADIO_AUTH_USERNAME-admin}:${SD_WEBUI_GRADIO_AUTH_PASSWORD-admin}'
-      - 'TORCH_COMMAND=pip install -U torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.4/'
-      - 'PIP_CACHE_DIR=/workdir/.cache'
-      - 'IIB_ACCESS_CONTROL=${IIB_ACCESS_CONTROL-auto}'
-      - 'IIB_SECRET_KEY=${IIB_SECRET_KEY-secret}'
-    volumes:
-      - "${BASE_VOLUME_DIR}/stable-diffusion-webui/.cache:/workdir/.cache"
-      - "${BASE_VOLUME_DIR}/stable-diffusion-webui:/workdir"
   ollama:
-    image: ollama/ollama:${OLLAMA_DOCKER_TAG-rocm}
+    image: ollama/ollama:${OLLAMA_DOCKER_TAG-latest}
     container_name: ollama
     pull_policy: always
+    ports:
+      - 11434:11434
     tty: true
     restart: always
-    devices:
-      - /dev/kfd
-      - /dev/dri
-    security_opt:
-      - seccomp:unconfined
-    group_add:
-      - video
-    environment:
-      - 'HIP_PLATFORM=amd'
-      - 'HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION-10.3.0}'
-      - 'PYTORCH_HIP_FALLBACK=1'
-      - 'PYTORCH_HIP_ALLOC_CONF=garbage_collection_threshold:0.6,max_split_size_mb:128,expandable_segments:True'
     volumes:
       - "${BASE_VOLUME_DIR}/ollama:/root/.ollama"
 
@@ -58,19 +19,11 @@ services:
     ports:
       - ${OPEN_WEBUI_PORT-8080}:8080
     environment:
+      - 'DATABASE_URL=${OPEN_WEBUI_DATABASE_URL}'
       - 'ENABLE_OLLAMA_API=${OPEN_WEBUI_ENABLE_OLLAMA_API-True}'
       - 'OLLAMA_BASE_URL=${OPEN_WEBUI_OLLAMA_BASE_URL-http://ollama:11434}'
       - 'WEBUI_SECRET_KEY=${OPEN_WEBUI_SECRET_KEY}'
-      - 'AUTOMATIC1111_BASE_URL=${OPEN_WEBUI_AUTOMATIC1111_BASE_URL-http://stable-diffusion-webui:7860}'
-      - 'AUTOMATIC1111_API_AUTH=${SD_WEBUI_API_AUTH_USERNAME}:${SD_WEBUI_API_AUTH_KEY}'
-      - 'ENABLE_IMAGE_GENERATION=${OPEN_WEBUI_ENABLE_IMAGE_GENERATION-True}'
-      - 'IMAGE_GENERATION_ENGINE=${OPEN_WEBUI_IMAGE_GENERATION_ENGINE-automatic1111}'
-      - 'IMAGE_GENERATION_MODEL=${OPEN_WEBUI_IMAGE_GENERATION_MODEL-v1-5-pruned-emaonly.safetensors [6ce0161689]}'
-      - 'IMAGE_SIZE=${OPEN_WEBUI_IMAGE_SIZE-512x512}'
-      - 'IMAGE_STEPS=${OPEN_WEBUI_IMAGE_STEPS-20}'
-      - 'AUTOMATIC1111_CFG_SCALE=${OPEN_WEBUI_AUTOMATIC1111_CFG_SCALE-7}'
-      - 'AUTOMATIC1111_SAMPLER=${OPEN_WEBUI_AUTOMATIC1111_SAMPLER-DPM++ 2M}'
-      - 'AUTOMATIC1111_SCHEDULER=${OPEN_WEBUI_AUTOMATIC1111_SCHEDULER-Karras}'
+      - 'ENABLE_IMAGE_GENERATION=${OPEN_WEBUI_ENABLE_IMAGE_GENERATION-False}'
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: always
