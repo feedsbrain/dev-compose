@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   github-runner:
-    image: feedsbrain/buildmystack:0.2.6
+    image: feedsbrain/buildmystack:0.2.9
     container_name: github-runner
     restart: always
     command: bash -lc "/home/runner/github/environments/runner.sh && tail -f /dev/null"
