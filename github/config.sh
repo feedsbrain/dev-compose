@@ -1,6 +1,6 @@
 #!/bin/bash
 GITHUB_RUNNER_ENVIRONMENTS=/home/runner/github/environments
-BUILDMYSTACK_VERSION=0.2.9
+BUILDMYSTACK_VERSION=0.3.0
 
 # read from .env if exist
 if test -f "../.env"; then

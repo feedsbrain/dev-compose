@@ -2,11 +2,12 @@ version: "3.7"
 
 services:
   github-runner:
-    image: feedsbrain/buildmystack:0.2.9
+    image: feedsbrain/buildmystack:0.3.0
     container_name: github-runner
     restart: always
     command: bash -lc "/home/runner/github/environments/runner.sh && tail -f /dev/null"
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - ${BASE_VOLUME_DIR}/github-runner/runner:/home/runner/github/environments
     environment:
       - TZ=Asia/Kuala_Lumpur
